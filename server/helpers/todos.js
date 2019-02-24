@@ -50,7 +50,7 @@ module.exports.updateTodo =  async function(req, res){
    }
 }
 
-module.exports.deleteTodo = function(req, res){
+module.exports.deleteTodo = async function(req, res){
    try{
         let foundTodo = await db.Todo.find({_id: req.params.todo_id});
         await foundTodo.remove();
