@@ -1,22 +1,28 @@
-import React, { Component } from "react";
-import "../styles/App.css";
+import React, {Component} from "react";
+import { fetchUser } from "../actions";
+import { BrowserRouter as Router } from "react-router-dom";
+import { connect } from 'react-redux';
+
+import Navbar from "./Navbar";
+import Main from "./Main";
 
 class App extends Component {
-  sendAuthRequest = event => {
-    console.log("Hello world")
-  };
-
+  componentDidMount() {
+    this.props.fetchUser();
+  }
   render() {
     return (
-      <div className="App">
-        <h2>Hello World</h2>
-        <button
-          className="btn btn-primary"
-          onClick={this.sendAuthRequest} 
-        > Sign in with Google</button>
-      </div>
+      <Router>
+        <div className="onboarding">
+          <Navbar />
+          <Main />
+        </div>
+      </Router>
     );
   }
 }
 
-export default App;
+export default connect(
+  null,
+  {fetchUser}
+)(App);

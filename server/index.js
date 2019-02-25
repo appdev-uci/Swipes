@@ -1,25 +1,38 @@
 const express = require("express");
 const app = express();
+const cookieSession = require('cookie-session');
 const bodyParser = require("body-parser");
 const db = require("./models");
+const passport = require('passport');
+
 //get routes from routes folder
 const authRoutes = require("./routes/auth");
 
 //get general error handling from helpers
 const errorHandler = require("./helpers/error");
 
-//get environment variables
-require("dotenv").load();
-
 //middleware from middleware folder
 const { loginRequired, ensureCorrectUser } = require("./middleware/auth");
 
+//passport set up
+require('./services/passport');
+
+//get environment variables
+require("dotenv").load();
+
 //to be able to parse incoming request
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+  cookieSession({
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    keys: [process.env.COOKIE_KEY]
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 //use routes from routes folder
-app.use("/auth/google", authRoutes);
+app.use("/auth", authRoutes);
 
 app.get("/", function(req, res) {
   console.log(req.user);
