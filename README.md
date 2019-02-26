@@ -1,6 +1,5 @@
 # Swipes
 
-# Purpose
 Simple website that helps uci students post swipes or connect with people
 that will swipe them in
 
